@@ -9,14 +9,14 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    DB_HOST: str
-    DB_PORT: int
-    DB_USER: str
-    DB_PASS: str
-    DB_NAME: str
+    DB_HOST: str = "localhost"
+    DB_PORT: int = 5432
+    DB_USER: str = "postgres"
+    DB_PASS: str = "root"
+    DB_NAME: str = "mydb"
     JWT_SECRET_KEY: str
-    ALGORITHM: str
-    ORIGINS: list
+    ALGORITHM: str = "HS256"
+    ORIGINS: list = ["localhost:8000", "127.0.0.1:8000"]
 
 
 settings = Settings()

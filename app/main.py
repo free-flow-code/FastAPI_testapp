@@ -18,7 +18,7 @@ logging.basicConfig(
         format='%(asctime)s %(levelname)s %(message)s'
     )
 
-app = FastAPI()
+app = FastAPI(title="Бронирования отелей")
 
 app.mount("/static", StaticFiles(directory="app/static"), "static")
 

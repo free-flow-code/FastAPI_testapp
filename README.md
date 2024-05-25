@@ -25,7 +25,7 @@
 
 ![Пример документации](https://i.ibb.co/ph4vPz0/image.png)
 
-## Запуск приложения локально (ubuntu)
+## Запуск приложения локально (linux)
 
 Python 3.9 должен быть установлен. Создайте и активируйте виртуальное окружение и установите зависимости:
 
@@ -45,6 +45,8 @@ DB_NAME=postgres
 JWT_SECRET_KEY=asdlajsdasASDASD
 ALGORITHM=HS256
 ORIGINS=["localhost:8000", "127.0.0.1:8000"]
+REDIS_HOST=localhost
+REDIS_PORT=6379
 ```
 
 где:
@@ -57,6 +59,8 @@ ORIGINS=["localhost:8000", "127.0.0.1:8000"]
 - 'JWT_SECRET_KEY' ключ для шифрования JWT-токена
 - 'ALGORITHM' алгоритм для шифрования JWT-токена, по умолчанию 'HS256'
 - 'ORIGINS' список разрешенных адресов для работы с API, по умолчанию '["localhost:8000", "127.0.0.1:8000"]'
+- 'REDIS_HOST' адрес redis, по умолчанию 'localhost'
+- 'REDIS_PORT' порт redis, по умолчанию '6379'
 
 Примените миграции командой:
 

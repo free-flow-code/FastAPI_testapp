@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ORIGINS: list = ["localhost:8000", "127.0.0.1:8000"]
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
 
 
 settings = Settings()

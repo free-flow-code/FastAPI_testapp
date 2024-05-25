@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from datetime import date
 from typing import Optional
+from fastapi_cache.decorator import cache
 
 from .schemas import SHotel
 from .dao import HotelDAO
@@ -12,11 +13,13 @@ router = APIRouter(
 
 
 @router.get("")
+@cache(expire=30)
 async def get_hotels() -> list[SHotel]:
     return await HotelDAO.find_all()
 
 
 @router.get("/{location}")
+@cache(expire=30)
 async def fetch_hotels_by_location(
         location: str,
         date_from: date,

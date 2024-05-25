@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from contextlib import asynccontextmanager
 
 from .config import settings
 from .bookings.router import router as router_bookings
@@ -21,7 +22,23 @@ logging.basicConfig(
         format='%(asctime)s %(levelname)s %(message)s'
     )
 
-app = FastAPI(title="Бронирования отелей")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logging.info("Service started")
+    redis = aioredis.from_url(
+        f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}",
+        encoding="utf8",
+        decode_responses=True
+        )
+    FastAPICache.init(RedisBackend(redis), prefix="cache")
+    yield
+    logging.info("Service exited")
+
+app = FastAPI(
+    title="Бронирования отелей",
+    lifespan=lifespan,
+    )
 
 app.mount("/static", StaticFiles(directory="app/static"), "static")
 
@@ -46,13 +63,3 @@ app.add_middleware(
         "Access-Control-Allow-Origin",
         "Authorization"],
 )
-
-
-@app.on_event("startup")
-async def startup():
-    redis = aioredis.from_url(
-        f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}",
-        encoding="utf8",
-        decode_responses=True
-        )
-    FastAPICache.init(RedisBackend(redis), prefix="cache")

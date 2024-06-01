@@ -5,13 +5,13 @@
 
 Стек:
 
-- FastAPI / Pydantic
+- FastAPI + Pydantic
 - SQLAlchemy
 - PostgreSQL
 - Redis
-- Celery
+- Celery + flower
 - Pytest
-- Docker / Docker-compose
+- Docker + Docker-compose
 - Grafana
 
 В документации можно увидеть:
@@ -47,6 +47,10 @@ ALGORITHM=HS256
 ORIGINS=["localhost:8000", "127.0.0.1:8000"]
 REDIS_HOST=localhost
 REDIS_PORT=6379
+SMTP_HOST = smtp.mail.com
+SMTP_USER = mymail@mail.com
+SMTP_PASSWORD=password
+SMTP_PORT=465
 ```
 
 где:
@@ -61,6 +65,10 @@ REDIS_PORT=6379
 - 'ORIGINS' список разрешенных адресов для работы с API, по умолчанию '["localhost:8000", "127.0.0.1:8000"]'
 - 'REDIS_HOST' адрес redis, по умолчанию 'localhost'
 - 'REDIS_PORT' порт redis, по умолчанию '6379'
+- SMTP_HOST хост почтового сервера, нет значения по умолчанию
+- SMTP_USER адрес почты, для подключения к серверу, нет значения по умолчанию
+- SMTP_PASSWORD пароль, для подключения к почтовому серверу, нет значения по умолчанию
+- SMTP_PORT порт почтового сервера, нет значения по умолчанию
 
 Примените миграции командой:
 

@@ -3,6 +3,8 @@ from sqlalchemy import and_, or_, select, func, insert, delete
 from typing import Any
 
 from .models import Bookings
+from app.hotels.models import Hotels
+from app.users.models import Users
 from ..hotels.rooms.models import Rooms
 from ..dao.base import BaseDAO
 from ..database import async_session_maker, engine
@@ -85,6 +87,35 @@ class BookingDAO(BaseDAO):
             ).join(
                 Rooms, cls.model.room_id == Rooms.id, isouter=True
             ).where(cls.model.user_id == user_id)
+            result = await session.execute(query)
+            return result.mappings().all()
+    
+    @classmethod
+    async def get_bookings_for_specific_data(cls, date: date):
+        """
+        SELECT bookings.*,
+            hotels.name as hotel_name,
+            users.email as user_email
+        FROM bookings
+        LEFT JOIN users ON bookings.user_id = users.id
+        LEFT JOIN rooms ON bookings.room_id = rooms.id
+        LEFT JOIN hotels ON rooms.hotel_id = hotels.id
+        WHERE bookings.date_from = date
+        """
+        async with async_session_maker() as session:
+            query = select(
+                cls.model.__table__.columns,
+                Hotels.name.label("hotel_name"),
+                Users.email.label("user_email")
+                ).select_from(
+                    Bookings
+                    ).join(
+                        Users, cls.model.user_id == Users.id, isouter=True
+                    ).join(
+                        Rooms, cls.model.room_id == Rooms.id, isouter=True
+                    ).join(
+                        Hotels, Rooms.hotel_id == Hotels.id
+                    ).where(cls.model.date_from == date)
             result = await session.execute(query)
             return result.mappings().all()
 

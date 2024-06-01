@@ -14,7 +14,7 @@ class SBooking(BaseModel):
     price: int
     total_cost: int
     total_days: int
-    image_id: Optional[int]
-    name: Optional[str]
-    description: Optional[str]
-    services: Optional[list]
+    image_id: Optional[int] =  None
+    name: Optional[str] =  None
+    description: Optional[str] =  None
+    services: Optional[list] =  None
